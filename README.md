@@ -1,4 +1,5 @@
-# my config (wip)
+# my neovim config
+wip
 
 ## Resources
 
