@@ -34,7 +34,43 @@ local plugins = {
       "nvim-tree/nvim-web-devicons",
       "MunifTanjim/nui.nvim",
     },
-  }
+  },
+  {
+    "williamboman/mason.nvim",
+    lazy = false,
+    config = function()
+      require("mason").setup()
+    end,
+  },
+  {
+    "williamboman/mason-lspconfig.nvim",
+    lazy = false,
+  },
+  {
+    "neovim/nvim-lspconfig",
+    lazy = false,
+    config = function()
+      local lspconfig = require("lspconfig")
+
+      lspconfig.lua_ls.setup({
+        settings = {
+          Lua = {
+            diagnostics = {
+              globals = {"vim"}
+            }
+          }
+        }
+      })
+      lspconfig.rust_analyzer.setup({})
+      lspconfig.ts_ls.setup({})
+
+      vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
+      vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
+      vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, {})
+      vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, {})
+      vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, {})
+    end,
+  },
 }
 
 require("lazy").setup(plugins, opts)
@@ -46,7 +82,7 @@ vim.cmd.colorscheme "catppuccin"
 
 -- telescope fuzzy finder
 local builtin = require("telescope.builtin")
-vim.keymap.set("n", "<C-p>", builtin.find_files, {})
+vim.keymap.set("n", "<leader>ff", builtin.find_files, {})
 vim.keymap.set("n", "<leader>fg", builtin.live_grep, {})
 
 -- treesitter
